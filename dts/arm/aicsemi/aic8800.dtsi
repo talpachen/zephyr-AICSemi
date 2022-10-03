@@ -17,6 +17,11 @@
 			compatible = "arm,cortex-m4f";
 			reg = <0>;
 		};
+
+		cpu1: cpu@1 {
+			compatible = "arm,cortex-m4f";
+			reg = <1>;
+		};
 	};
 
 	soc {
@@ -25,13 +30,23 @@
 			reg = <0x00100000 DT_SIZE_K(960)>;
 		};
 
+		gpioa: gpio@40504000 {
+			compatible = "aicsemi,aic8800x-gpio";
+			reg = <0x40504000 0x1000>;
+			interrupts = <65 0>;
+		};
+
+		gpiob: gpio@50011000 {
+			compatible = "aicsemi,aic8800x-gpio";
+			reg = <0x50011000 0x1000>;
+			// interrupts = <16 0>;
+		};
+
 		uart0: uart@40041000 {
 			compatible = "aicsemi,aic8800x-uart";
 			reg = <0x40041000 0x1000>;
 			interrupts = <16 0>;
-			status = "okay";
 			current-speed = <921600>;
-			label = "UART_0";
 		};
 
 		/*

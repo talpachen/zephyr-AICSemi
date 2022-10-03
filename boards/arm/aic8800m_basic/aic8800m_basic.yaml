@@ -15,15 +15,14 @@ supported:
   - uart
 testing:
   ignore_tags:
-    - clock_controller
-    - pinmux
-    - net
-    - bluetooth
     - watchdog
+    - adc
     - pwm
     - i2c
     - spi
-    - adc
+    - clock_controller
+    - pinmux
     - sdhc
     - bluetooth
+    - net
     - netif:wifi

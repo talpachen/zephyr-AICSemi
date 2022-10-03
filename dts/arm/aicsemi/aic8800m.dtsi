@@ -7,10 +7,16 @@
 #include <arm/aicsemi/aic8800.dtsi>
 
 / {
+	//chosen {
+	//	zephyr,code-partition = &code_partition;
+	//};
+
 	soc {
         flash0: flash@8000000 {
 			compatible = "soc-nv-flash";
             reg = <0x08000000 DT_SIZE_K(2048)>;
+            erase-block-size = <4096>;
+            write-block-size = <256>;
         };
-	};
+    };
 };
