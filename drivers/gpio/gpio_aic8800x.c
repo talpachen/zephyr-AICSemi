@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <errno.h>
-#include <drivers/gpio.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/gpio.h>
+//#include <errno.h>
+//#include <drivers/gpio.h>
 
 #include "gpio_utils.h"
 
@@ -41,10 +43,24 @@ struct gpio_aic8800x_data {
 	sys_slist_t callbacks;
 };
 
-// TODO
-#define PMIC_MEM_READ(...)			0
-#define PMIC_MEM_WRITE(...)
-#define PMIC_MEM_MASK_WRITE(...)
+#ifndef PMIC_MEM_READ
+static uint32_t PMIC_MEM_READ(uint32_t reg)
+{
+	return 0;
+}
+#endif
+
+#ifndef PMIC_MEM_WRITE
+static void PMIC_MEM_WRITE(uint32_t reg, uint32_t v)
+{
+}
+#endif
+
+#ifndef PMIC_MEM_MASK_WRITE
+static void PMIC_MEM_MASK_WRITE(uint32_t reg, uint32_t v, uint32_t mask)
+{
+}
+#endif
 
 static int gpio_aic8800x_configure(const struct device *port, gpio_pin_t pin,
 				    gpio_flags_t flags)
@@ -188,7 +204,6 @@ static int gpio_aic8800x_pin_interrupt_configure(const struct device *port,
 					enum gpio_int_mode mode,
 					enum gpio_int_trig trig)
 {
-	LOG_DBG("Pin interrupts not supported.");
 	return -ENOTSUP;
 }
 
@@ -219,22 +234,21 @@ static const struct gpio_driver_api gpio_aic8800x_api = {
 	.get_pending_int = NULL,
 };
 
-
 #define GPIO_AIC8800X_INIT(idx)																\
-	static const struct gpio_aic8800x_config gpio_aic8800x_##idx##_config = {				\
+	static const struct gpio_aic8800x_config gpio_aic8800x_config##idx = {					\
 		.common = {																			\
 			.port_pin_mask = GPIO_PORT_PIN_MASK_FROM_DT_INST(idx),							\
 		},																					\
-		.gpio_regs = (struct aic8800x_gpio_regs *)DT_REG_ADDR(DT_INST_PHANDLE(gpio##idx)),	\
-		.pmic_area = DT_PROP(gpio##idx, pmic_area),											\
+		.gpio_regs = DT_INST_REG_ADDR(idx),													\
+		.pmic_area = 0,																		\
 	};																						\
-	static struct gpio_aic8800x_data gpio_aic8800x_##idx##_data;							\
-	DEVICE_DT_DEFINE(DT_NODELABEL(gpio##idx),												\
-				&gpio_aic8800x_init,														\
+	static struct gpio_aic8800x_data gpio_aic8800x_data##idx;								\
+	DEVICE_DT_INST_DEFINE(idx,																\
+				gpio_aic8800x_init,															\
 				NULL,																		\
-				&gpio_aic8800x_##idx##_data,												\
-				&gpio_aic8800x_##idx##_config,												\
+				&gpio_aic8800x_data##idx,													\
+				&gpio_aic8800x_config##idx,													\
 				PRE_KERNEL_1, CONFIG_GPIO_INIT_PRIORITY,									\
-				&gpio_lpc11u6x_driver_api)
+				&gpio_aic8800x_api);
 
 DT_INST_FOREACH_STATUS_OKAY(GPIO_AIC8800X_INIT)
