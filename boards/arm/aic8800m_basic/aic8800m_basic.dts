@@ -50,6 +50,10 @@
 };
 */
 
+&cpu0 {
+	clock-frequency = <480000000>;
+};
+
 &uart0 {
 	//pinctrl-0 = <&uart0_default>;
 	//pinctrl-names = "default";
