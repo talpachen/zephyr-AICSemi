@@ -28,6 +28,7 @@ adi	Analog Devices, Inc.
 advantech	Advantech Corporation
 aeroflexgaisler	Aeroflex Gaisler AB
 aesop	AESOP Embedded Forum
+aicsemi	AIC Semiconductor Limited
 al	Annapurna Labs
 alcatel	Alcatel
 allegro	Allegro DVT
