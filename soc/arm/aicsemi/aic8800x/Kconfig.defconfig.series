@@ -3,7 +3,7 @@
 
 if SOC_SERIES_AIC8800X
 
-source "soc/arm/aicsemi/aic8800/Kconfig.defconfig.aic8800*"
+source "soc/arm/aicsemi/aic8800x/Kconfig.defconfig.aic8800*"
 
 config SOC_SERIES
 	default "aic8800x"
