@@ -209,14 +209,14 @@ struct aic8800x_uart_data {
 
 static int uart_aic8800x_init(const struct device *dev)
 {
-	struct aic8800x_uart_regs *uart_regs = GET_GPIO_REGS(port);
+	struct aic8800x_uart_regs *uart_regs = GET_GPIO_REGS(dev);
 	//struct aic8800x_uart_data *const data = dev->data;
 	return 0;
 }
 
 static int uart_aic8800x_poll_in(const struct device *dev, unsigned char *c)
 {
-	struct aic8800x_uart_regs *uart_regs = GET_GPIO_REGS(port);
+	struct aic8800x_uart_regs *uart_regs = GET_GPIO_REGS(dev);
 
 	if ((uart_regs->DBUFSTS & UART_DBUFSTS_RX_DBUF_EMPTY_MASK) != 0) {
 		*c = uart_regs->TXRXD;
@@ -229,14 +229,12 @@ static int uart_aic8800x_poll_in(const struct device *dev, unsigned char *c)
 
 static void uart_aic8800x_poll_out(const struct device *dev, unsigned char c)
 {
-	struct aic8800x_uart_regs *uart_regs = GET_GPIO_REGS(port);
+	struct aic8800x_uart_regs *uart_regs = GET_GPIO_REGS(dev);
 
 	while ((uart_regs->DBUFSTS & UART_DBUFSTS_TX_DBUF_FULL_MASK) != 0) {
 	}
 
 	uart_regs->TXRXD = c;
-
-	return 0;
 }
 
 static int uart_aic8800x_err_check(const struct device *dev)
@@ -251,22 +249,25 @@ static const struct uart_driver_api uart_aic8800x_driver_api = {
 	.err_check = uart_aic8800x_err_check,
 };
 
-#define AIC8800X_UART_IRQ_HANDLER(n)
-#define AIC8800X_UART_IRQ_HANDLER_FUNC_INIT(n)
+#define AIC8800X_UART_IRQ_HANDLER(idx)										\
+	static void usart_aic8800_config_func_##idx(const struct device *dev)	\
+	{																		\
+	}
+#define AIC8800X_UART_IRQ_HANDLER_FUNC_INIT(idx)							\
+	.irq_config_func = usart_aic8800_config_func_##idx
 
-#define AIC8800X_UART_INIT(n)							\
-	PINCTRL_DT_INST_DEFINE(n);							\
-	AIC8800X_UART_IRQ_HANDLER(n)						\
-	static struct aic8800x_uart_data uart_aic8800x_data_##n = {			\
-		.baud_rate = DT_INST_PROP(n, current_speed),			\
+#define AIC8800X_UART_INIT(idx)							\
+	AIC8800X_UART_IRQ_HANDLER(idx)						\
+	static struct aic8800x_uart_data uart_aic8800x_data_##idx = {			\
+		.baud_rate = DT_INST_PROP(idx, current_speed),			\
 	};									\
-	static const struct aic8800x_uart_config uart_aic8800x_config_##n = {		\
-		.uart_regs = DT_INST_REG_ADDR(n),					\
+	static const struct aic8800x_uart_config uart_aic8800x_config_##idx = {		\
+		.uart_regs = DT_INST_REG_ADDR(idx),					\
 	};									\
-	DEVICE_DT_INST_DEFINE(n, &uart_aic8800x_init,				\
+	DEVICE_DT_INST_DEFINE(idx, &uart_aic8800x_init,				\
 			      NULL,						\
-			      &uart_aic8800x_data_##n,				\
-			      &uart_aic8800x_config_##n, PRE_KERNEL_1,		\
+			      &uart_aic8800x_data_##idx,				\
+			      &uart_aic8800x_config_##idx, PRE_KERNEL_1,		\
 			      CONFIG_SERIAL_INIT_PRIORITY,			\
 			      &uart_aic8800x_driver_api);
 

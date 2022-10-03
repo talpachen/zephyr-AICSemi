@@ -1,12 +1,9 @@
 # Copyright (c) 2022, Talpa Chen
 # SPDX-License-Identifier: Apache-2.0
 
-DT_COMPAT_AICSEMI_AIC8800X_UART := aicsemi,aic8800x-uart
-
-config USART_AICSEMI_AIC8800X
+config UART_AIC8800X
 	bool "AICSemi AIC8800X serial driver"
 	depends on SOC_SERIES_AIC8800X
-	default $(dt_compat_enabled,$(DT_COMPAT_AICSEMI_AIC8800X_UART))
 	select SERIAL_HAS_DRIVER
 	help
 	  AICSemi AIC8800X uart driver
