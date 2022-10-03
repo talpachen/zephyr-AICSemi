@@ -32,10 +32,10 @@
 		};
 	};
 
-	//aliases {
-	//	led0 = &led0;
-	//	led1 = &led1;
-	//};
+	aliases {
+		led0 = &led0;
+		led1 = &led1;
+	};
 };
 
 &cpu0 {
