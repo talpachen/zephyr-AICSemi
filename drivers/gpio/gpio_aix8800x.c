@@ -13,7 +13,7 @@
 
 
 #define GET_GPIO_REGS(port)		(((struct gpio_aic8800x_config *)port->config)->gpio_regs)
-#define GET_PMIC_ACCESS(port)	(((struct gpio_aic8800x_config *)port->config)->pmic_access)
+#define GET_PMIC_ACCESS(port)	(((struct gpio_aic8800x_config *)port->config)->pmic_area)
 
 struct aic8800x_gpio_regs {
     volatile uint32_t VR;           /* 0x000 (R/W) : Val Reg */
@@ -31,9 +31,9 @@ struct aic8800x_gpio_regs {
 };
 
 struct gpio_aic8800x_config {
-	struct gpio_driver_data common;
+	struct gpio_driver_config common;
 	struct aic8800x_gpio_regs *const gpio_regs;
-	bool pmic_access;
+	bool pmic_area;
 };
 
 struct gpio_aic8800x_data {
@@ -50,10 +50,10 @@ static int gpio_aic8800x_configure(const struct device *port, gpio_pin_t pin,
 				    gpio_flags_t flags)
 {
 	struct aic8800x_gpio_regs *gpio_regs = GET_GPIO_REGS(port);
-	bool pmic_access = GET_PMIC_ACCESS(port);
+	bool pmic_area = GET_PMIC_ACCESS(port);
 	uint32_t pin_bit = BIT(pin);
 
-	if (!pmic_access) {
+	if (!pmic_area) {
 		gpio_regs->MR |= pin_bit;
 
 		if ((flags & GPIO_PULL_UP) != 0U) {
@@ -110,9 +110,9 @@ static int gpio_aic8800x_configure(const struct device *port, gpio_pin_t pin,
 static int gpio_aic8800x_port_get_raw(const struct device *port, uint32_t *value)
 {
 	struct aic8800x_gpio_regs *gpio_regs = GET_GPIO_REGS(port);
-	bool pmic_access = GET_PMIC_ACCESS(port);
+	bool pmic_area = GET_PMIC_ACCESS(port);
 
-	if (!pmic_access) {
+	if (!pmic_area) {
 		*value = gpio_regs->VR;
 	} else {
 		*value = PMIC_MEM_READ((uint32_t)(&gpio_regs->VR));
@@ -126,9 +126,9 @@ static int gpio_aic8800x_port_set_masked_raw(const struct device *port,
 					gpio_port_value_t value)
 {
 	struct aic8800x_gpio_regs *gpio_regs = GET_GPIO_REGS(port);
-	bool pmic_access = GET_PMIC_ACCESS(port);
+	bool pmic_area = GET_PMIC_ACCESS(port);
 
-	if (!pmic_access) {
+	if (!pmic_area) {
 		gpio_regs->VR = (gpio_regs->VR & ~mask) | (mask & value);
 	} else {
 		PMIC_MEM_MASK_WRITE((uint32_t)(&gpio_regs->VR), value, mask);
@@ -141,9 +141,9 @@ static int gpio_aic8800x_port_set_bits_raw(const struct device *port,
 				    gpio_port_pins_t pins)
 {
 	struct aic8800x_gpio_regs *gpio_regs = GET_GPIO_REGS(port);
-	bool pmic_access = GET_PMIC_ACCESS(port);
+	bool pmic_area = GET_PMIC_ACCESS(port);
 
-	if (!pmic_access) {
+	if (!pmic_area) {
 		gpio_regs->VR = gpio_regs->VR | pins;
 	} else {
 		PMIC_MEM_MASK_WRITE((uint32_t)(&gpio_regs->VR), pins, pins);
@@ -156,9 +156,9 @@ static int gpio_aic8800x_port_clear_bits_raw(const struct device *port,
 					gpio_port_pins_t pins)
 {
 	struct aic8800x_gpio_regs *gpio_regs = GET_GPIO_REGS(port);
-	bool pmic_access = GET_PMIC_ACCESS(port);
+	bool pmic_area = GET_PMIC_ACCESS(port);
 
-	if (!pmic_access) {
+	if (!pmic_area) {
 		gpio_regs->VR = gpio_regs->VR & ~pins;
 	} else {
 		PMIC_MEM_MASK_WRITE((uint32_t)(&gpio_regs->VR), 0, pins);
@@ -171,9 +171,9 @@ static int gpio_aic8800x_port_toggle_bits(const struct device *port,
 				    gpio_port_pins_t pins)
 {
 	struct aic8800x_gpio_regs *gpio_regs = GET_GPIO_REGS(port);
-	bool pmic_access = GET_PMIC_ACCESS(port);
+	bool pmic_area = GET_PMIC_ACCESS(port);
 
-	if (!pmic_access) {
+	if (!pmic_area) {
 		gpio_regs->VR = gpio_regs->VR ^ pins;
 	} else {
 		uint_fast32_t temp = PMIC_MEM_READ((uint32_t)(&gpio_regs->VR)) ^ pins;
@@ -201,6 +201,12 @@ static int gpio_aic8800x_manage_callback(const struct device *dev,
 	return gpio_manage_callback(&data->callbacks, callback, set);
 }
 
+static int gpio_aic8800x_init(const struct device *dev)
+{
+	// TODO
+	return 0;
+}
+
 static const struct gpio_driver_api gpio_aic8800x_api = {
 	.pin_configure = gpio_aic8800x_configure,
 	.port_get_raw = gpio_aic8800x_port_get_raw,
@@ -214,8 +220,21 @@ static const struct gpio_driver_api gpio_aic8800x_api = {
 };
 
 
+#define GPIO_AIC8800X_INIT(idx)																\
+	static const struct gpio_aic8800x_config gpio_aic8800x_##idx##_config = {				\
+		.common = {																			\
+			.port_pin_mask = GPIO_PORT_PIN_MASK_FROM_DT_INST(idx),							\
+		},																					\
+		.gpio_regs = (struct aic8800x_gpio_regs *)DT_REG_ADDR(DT_INST_PHANDLE(gpio##idx)),	\
+		.pmic_area = DT_PROP(gpio##idx, pmic_area),											\
+	};																						\
+	static struct gpio_aic8800x_data gpio_aic8800x_##idx##_data;							\
+	DEVICE_DT_DEFINE(DT_NODELABEL(gpio##idx),												\
+				&gpio_aic8800x_init,														\
+				NULL,																		\
+				&gpio_aic8800x_##idx##_data,												\
+				&gpio_aic8800x_##idx##_config,												\
+				PRE_KERNEL_1, CONFIG_GPIO_INIT_PRIORITY,									\
+				&gpio_lpc11u6x_driver_api)
 
-
-
-
-
+DT_INST_FOREACH_STATUS_OKAY(GPIO_AIC8800X_INIT)
