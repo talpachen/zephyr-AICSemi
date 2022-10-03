@@ -1,0 +1,16 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Copyright (c) 2022 Talpa Chen
+ */
+
+#include <arm/aicsemi/aic8800.dtsi>
+
+/ {
+	soc {
+        flash0: flash@8000000 {
+			compatible = "soc-nv-flash";
+            reg = <0x08000000 DT_SIZE_K(2048)>;
+        };
+	};
+};

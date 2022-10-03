@@ -1,0 +1,15 @@
+# Copyright (c) 2022, Talpa Chen
+# SPDX-License-Identifier: Apache-2.0
+
+config SOC_FAMILY_AICSEMI
+	bool
+
+if SOC_FAMILY_AICSEMI
+
+config SOC_FAMILY
+	string
+	default "aicsemi"
+
+source "soc/arm/aicsemi/*/Kconfig.soc"
+
+endif # SOC_FAMILY_AICSEMI

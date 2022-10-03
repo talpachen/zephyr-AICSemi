@@ -1,0 +1,29 @@
+# Copyright (c) 2022, Talpa Chen
+# SPDX-License-Identifier: Apache-2.0
+
+identifier: aic8800m_basic
+name: AICSemi AIC8800M-Basic
+type: mcu
+arch: arm
+ram: 960
+flash: 2048
+toolchain:
+  - zephyr
+  - gnuarmemb
+supported:
+  - gpio
+  - uart
+testing:
+  ignore_tags:
+    - clock_controller
+    - pinmux
+    - net
+    - bluetooth
+    - watchdog
+    - pwm
+    - i2c
+    - spi
+    - adc
+    - sdhc
+    - bluetooth
+    - netif:wifi
