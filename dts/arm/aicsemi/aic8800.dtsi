@@ -34,7 +34,7 @@
 			compatible = "aicsemi,aic8800x-gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
-			reg = <0x40504000 0x1000>;
+			reg = <0x40504000 DT_SIZE_K(4)>;
 			interrupts = <65 0>;
 		};
 
@@ -42,35 +42,26 @@
 			compatible = "aicsemi,aic8800x-gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
-			reg = <0x50011000 0x1000>;
+			reg = <0x50011000 DT_SIZE_K(4)>;
 		};
 
 		uart0: uart@40041000 {
 			compatible = "aicsemi,aic8800x-uart";
-			reg = <0x40041000 0x1000>;
+			reg = <0x40041000 DT_SIZE_K(4)>;
 			interrupts = <16 0>;
-			current-speed = <921600>;
 		};
 
-		/*
 		uart1: uart@40042000 {
 			compatible = "aicsemi,aic8800x-uart";
-			reg = <0x40042000 0x1000>;
+			reg = <0x40042000 DT_SIZE_K(4)>;
 			interrupts = <17 0>;
-			clocks = <&rcc STM32_CLOCK_BUS_APB1 0x00020000>;
-			status = "disabled";
-			label = "UART_1";
 		};
 
 		uart2: uart@40043000 {
 			compatible = "aicsemi,aic8800x-uart";
-			reg = <0x40043000 0x1000>;
+			reg = <0x40043000 DT_SIZE_K(4)>;
 			interrupts = <18 0>;
-			clocks = <&rcc STM32_CLOCK_BUS_APB1 0x00020000>;
-			status = "disabled";
-			label = "UART_2";
 		};
-		*/
 	};
 };
 

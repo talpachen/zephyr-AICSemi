@@ -204,7 +204,7 @@ struct aic8800x_uart_config {
 };
 
 struct aic8800x_uart_data {
-	uint32_t baud_rate;
+	uint32_t dummy;
 };
 
 static int uart_aic8800x_init(const struct device *dev)
@@ -259,7 +259,6 @@ static const struct uart_driver_api uart_aic8800x_driver_api = {
 #define AIC8800X_UART_INIT(idx)							\
 	AIC8800X_UART_IRQ_HANDLER(idx)						\
 	static struct aic8800x_uart_data uart_aic8800x_data_##idx = {			\
-		.baud_rate = DT_INST_PROP(idx, current_speed),			\
 	};									\
 	static const struct aic8800x_uart_config uart_aic8800x_config_##idx = {		\
 		.uart_regs = DT_INST_REG_ADDR(idx),					\
