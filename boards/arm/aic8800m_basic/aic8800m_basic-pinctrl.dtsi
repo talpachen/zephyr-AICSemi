@@ -8,8 +8,8 @@
 &pinctrl_a {
 	uart0_default: uart0_default {
 		group1 {
-			pinmux = <AIC8800X_PINMUX('A', 8, 0)>,
-				<AIC8800X_PINMUX('A', 9, 0)>;
+			pinmux = <UART0_RX_A8>,
+				<UART0_TX_A9>;
 		};
 	};
 };
