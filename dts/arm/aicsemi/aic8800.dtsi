@@ -29,37 +29,51 @@
 			compatible = "mmio-sram";
 			reg = <0x00100000 DT_SIZE_K(960)>;
 		};
+		
+		pinmuxa: pinmux@40503000 {
+			compatible = "aicsemi,aic8800x-pinmux";
+			#pinmux-cells = <2>;
+			reg = <40503000 0x1000>;
+			status = "okay";
+		};
 
 		gpioa: gpio@40504000 {
 			compatible = "aicsemi,aic8800x-gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
-			reg = <0x40504000 DT_SIZE_K(4)>;
+			reg = <0x40504000 0x1000>;
 			interrupts = <65 0>;
+		};
+		
+		pinmuxb: pinmux@0x50012000 {
+			compatible = "aicsemi,aic8800x-pinmux";
+			#pinmux-cells = <2>;
+			reg = <0x50012000 0x1000>;
+			status = "okay";
 		};
 
 		gpiob: gpio@50011000 {
 			compatible = "aicsemi,aic8800x-gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
-			reg = <0x50011000 DT_SIZE_K(4)>;
+			reg = <0x50011000 0x1000>;
 		};
 
 		uart0: uart@40041000 {
 			compatible = "aicsemi,aic8800x-uart";
-			reg = <0x40041000 DT_SIZE_K(4)>;
+			reg = <0x40041000 0x1000>;
 			interrupts = <16 0>;
 		};
 
 		uart1: uart@40042000 {
 			compatible = "aicsemi,aic8800x-uart";
-			reg = <0x40042000 DT_SIZE_K(4)>;
+			reg = <0x40042000 0x1000>;
 			interrupts = <17 0>;
 		};
 
 		uart2: uart@40043000 {
 			compatible = "aicsemi,aic8800x-uart";
-			reg = <0x40043000 DT_SIZE_K(4)>;
+			reg = <0x40043000 0x1000>;
 			interrupts = <18 0>;
 		};
 	};
