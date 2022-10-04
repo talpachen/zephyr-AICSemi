@@ -23,11 +23,11 @@
 	leds {
 		compatible = "gpio-leds";
 		led0: led_green {
-			gpios = <&gpiob 6 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio_b 6 GPIO_ACTIVE_HIGH>;
 			label = "Green LED";
 		};
 		led1: led_blue {
-			gpios = <&gpiob 7 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpio_b 7 GPIO_ACTIVE_HIGH>;
 			label = "Blue LED";
 		};
 	};
@@ -49,10 +49,10 @@
 	//pinctrl-names = "default";
 };
 
-&gpioa {
+&gpio_a {
 	status = "okay";
 };
 
-&gpiob {
+&gpio_a {
 	status = "okay";
 };

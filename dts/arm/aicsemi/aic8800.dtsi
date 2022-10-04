@@ -31,52 +31,143 @@
 	};
 
 	soc {
-		pinctrla: pin-controller@40503000 {
+		pinmux_a: pinmux@40503000 {
+			compatible = "aicsemi,aic8800x-pinmux";
+			#pinmux-cells = <2>;
+			reg = <0x40503000 0x1000>;
+			status = "okay";
+		};
+
+		pinmux_b: pinmux@0x50012000 {
+			compatible = "aicsemi,aic8800x-pinmux";
+			#pinmux-cells = <2>;
+			reg = <0x50012000 0x1000>;
+			status = "okay";
+		};
+
+		pinctrl_a: pinctrl@40504000 {
 			compatible = "st,aic8800x-pinctrl";
 			#address-cells = <1>;
 			#size-cells = <1>;
-			reg = <40503000 0x1000>;
+			reg = <0x40504000 0x1000>;
 
-			gpioa: gpio@40504000 {
+			gpio_a: gpio@40504000 {
 				compatible = "aicsemi,aic8800x-gpio";
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <0x40504000 0x1000>;
 				interrupts = <65 0>;
 			};
-		}
-		
-		pinctrlb: pin-controller@50011000 {
+		};
+
+		pinctrl_b: pinctrl@50011000 {
 			compatible = "st,aic8800x-pinctrl";
 			#address-cells = <1>;
 			#size-cells = <1>;
-			reg = <0x50012000 0x1000>;
+			reg = <0x50011000 0x1000>;
 
-			gpioa: gpio@50011000 {
+			gpio_b: gpio@50011000 {
 				compatible = "aicsemi,aic8800x-gpio";
 				gpio-controller;
 				#gpio-cells = <2>;
 				reg = <50011000 0x1000>;
 			};
-		}
+		};
 
 		uart0: uart@40041000 {
 			compatible = "aicsemi,aic8800x-uart";
 			reg = <0x40041000 0x1000>;
 			interrupts = <16 0>;
+			status = "disabled";
 		};
 
 		uart1: uart@40042000 {
 			compatible = "aicsemi,aic8800x-uart";
 			reg = <0x40042000 0x1000>;
 			interrupts = <17 0>;
+			status = "disabled";
 		};
 
 		uart2: uart@40043000 {
 			compatible = "aicsemi,aic8800x-uart";
 			reg = <0x40043000 0x1000>;
 			interrupts = <18 0>;
+			status = "disabled";
 		};
+		
+		/*
+		wwdg0: watchdog@40103000 {
+			compatible = "aicsemi,aic8800x-watchdog";
+			reg = <0x40103000 0x1000>;
+			interrupts = <66 0>;
+			status = "disabled";
+		};
+		
+		wwdg1: watchdog@40104000 {
+			compatible = "aicsemi,aic8800x-watchdog";
+			reg = <0x40104000 0x1000>;
+			interrupts = <67 0>;
+			status = "disabled";
+		};
+		
+		wwdg2: watchdog@4010A000 {
+			compatible = "aicsemi,aic8800x-watchdog";
+			reg = <0x4010A000 0x1000>;
+			interrupts = <68 0>;
+			status = "disabled";
+		};
+		
+		wwdg3: watchdog@4010C000 {
+			compatible = "aicsemi,aic8800x-watchdog";
+			reg = <0x4010C000 0x1000>;
+			interrupts = <30 0>;
+			status = "disabled";
+		};
+		
+		wwdg4: watchdog@40502000 {
+			compatible = "aicsemi,aic8800x-watchdog";
+			reg = <0x40502000 0x1000>;
+			status = "disabled";
+		};
+		
+		timer0: timer@40106000 {
+			compatible = "aicsemi,aic8800x-timer";
+			reg = <0x40106000 0x1000>;
+			status = "disabled";
+		}
+
+		timer1: timer@40107000 {
+			compatible = "aicsemi,aic8800x-timer";
+			reg = <0x40107000 0x1000>;
+			status = "disabled";
+		}
+
+		timer2: timer@40501000 {
+			compatible = "aicsemi,aic8800x-timer";
+			reg = <0x40501000 0x1000>;
+			status = "disabled";
+		}
+		
+		i2cm: i2cm@40102000 {
+			compatible = "aicsemi,aic8800x-i2cm";
+			reg = <0x40102000 0x1000>;
+			interrupts = <71 0>;
+			status = "disabled";
+		};
+
+		spi: spi@40105000 {
+			compatible = "aicsemi,aic8800x-spi";
+			reg = <0x40105000 0x1000>;
+			interrupts = <69 0>;
+			status = "disabled";
+		};
+		
+		adc: adc@5001B000 {
+			compatible = "aicsemi,aic8800x-adc";
+			reg = <0x5001B000 0x1000>;
+			status = "disabled";
+		};
+		*/
 	};
 };
 
