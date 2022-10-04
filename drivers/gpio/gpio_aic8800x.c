@@ -216,9 +216,19 @@ static int gpio_aic8800x_manage_callback(const struct device *dev,
 	return gpio_manage_callback(&data->callbacks, callback, set);
 }
 
-static int gpio_aic8800x_init(const struct device *dev)
+static void gpio_aic8800x_isr(const struct device *dev)
 {
 	// TODO
+	//struct gpio_aic8800x_data *data = dev->data;
+}
+
+static int gpio_aic8800x_init(const struct device *dev)
+{
+	// GPIOA IRQ Init
+	IRQ_CONNECT(DT_INST_IRQN(0), DT_INST_IRQ(0, priority),
+			gpio_aic8800x_isr, DEVICE_DT_INST_GET(0), 0);
+	irq_enable(DT_INST_IRQN(0));
+
 	return 0;
 }
 
@@ -242,7 +252,9 @@ static const struct gpio_driver_api gpio_aic8800x_api = {
 		.gpio_regs = DT_INST_REG_ADDR(idx),													\
 		.pmic_area = (DT_INST_REG_ADDR(idx) & 0xff000000) == 0x50000000 ? true : false,		\
 	};																						\
+																							\
 	static struct gpio_aic8800x_data gpio_aic8800x_data##idx;								\
+																							\
 	DEVICE_DT_INST_DEFINE(idx,																\
 				gpio_aic8800x_init,															\
 				NULL,																		\
