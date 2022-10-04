@@ -32,18 +32,17 @@
 
 		gpioa: gpio@40504000 {
 			compatible = "aicsemi,aic8800x-gpio";
-			reg = <0x40504000 0x1000>;
 			gpio-controller;
 			#gpio-cells = <2>;
+			reg = <0x40504000 0x1000>;
 			interrupts = <65 0>;
 		};
 
 		gpiob: gpio@50011000 {
 			compatible = "aicsemi,aic8800x-gpio";
-			reg = <0x50011000 0x1000>;
 			gpio-controller;
 			#gpio-cells = <2>;
-			// interrupts = <16 0>;
+			reg = <0x50011000 0x1000>;
 		};
 
 		uart0: uart@40041000 {

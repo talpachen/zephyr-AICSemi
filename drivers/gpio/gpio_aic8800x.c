@@ -240,7 +240,7 @@ static const struct gpio_driver_api gpio_aic8800x_api = {
 			.port_pin_mask = GPIO_PORT_PIN_MASK_FROM_DT_INST(idx),							\
 		},																					\
 		.gpio_regs = DT_INST_REG_ADDR(idx),													\
-		.pmic_area = 0,																		\
+		.pmic_area = (DT_INST_REG_ADDR(idx) & 0xff000000) == 0x50000000 ? true : false,		\
 	};																						\
 	static struct gpio_aic8800x_data gpio_aic8800x_data##idx;								\
 	DEVICE_DT_INST_DEFINE(idx,																\
@@ -248,7 +248,8 @@ static const struct gpio_driver_api gpio_aic8800x_api = {
 				NULL,																		\
 				&gpio_aic8800x_data##idx,													\
 				&gpio_aic8800x_config##idx,													\
-				PRE_KERNEL_1, CONFIG_GPIO_INIT_PRIORITY,									\
+				PRE_KERNEL_1,																\
+				CONFIG_GPIO_INIT_PRIORITY,													\
 				&gpio_aic8800x_api);
 
 DT_INST_FOREACH_STATUS_OKAY(GPIO_AIC8800X_INIT)
