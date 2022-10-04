@@ -3,15 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <dt-bindings/pinctrl/aic8800x-pinctrl.h>
+ #include <dt-bindings/pinctrl/aic8800x-pinctrl.h>
 
-&pinctrl {
+&pinctrl_a {
 	uart0_default: uart0_default {
 		group1 {
-			pinmux = <UART0_TX_PA9>;
-		};
-		group2 {
-			pinmux = <UART0_RX_PA8>;
+			pinmux = <AIC8800X_PINMUX('A', 8, 0)>,
+				<AIC8800X_PINMUX('A', 9, 0)>;
 		};
 	};
 };

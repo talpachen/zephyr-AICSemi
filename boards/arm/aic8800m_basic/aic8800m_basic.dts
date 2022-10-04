@@ -7,7 +7,7 @@
 
 #include <aicsemi/aic8800m.dtsi>
 #include <zephyr/dt-bindings/gpio/gpio.h>
-//#include "aic8800m_basic-pinctrl.dtsi"
+#include "aic8800m_basic-pinctrl.dtsi"
 
 / {
 	model = "AICSemi AIC8800M-Basic";
@@ -45,8 +45,8 @@
 &uart0 {
 	current-speed = <921600>;
 	status = "okay";
-	//pinctrl-0 = <&uart0_default>;
-	//pinctrl-names = "default";
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-names = "default";
 };
 
 &gpio_a {
