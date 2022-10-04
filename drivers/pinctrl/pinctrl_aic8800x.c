@@ -5,9 +5,10 @@
 
 #include <drivers/pinctrl.h>
 
-static void pinctrl_configure_pin(const pinctrl_soc_pin_t *pin)
+static void pinctrl_configure_pin(const pinctrl_soc_pin_t *pin, uintptr_t reg)
 {
-	// TODO
+	ARG_UNUSED(reg);
+
 	#if 0
 	gpio_init(pin->pin_num);
 	gpio_set_function(pin->pin_num, pin->alt_func);
@@ -23,10 +24,8 @@ static void pinctrl_configure_pin(const pinctrl_soc_pin_t *pin)
 int pinctrl_configure_pins(const pinctrl_soc_pin_t *pins, uint8_t pin_cnt,
 			   uintptr_t reg)
 {
-	ARG_UNUSED(reg);
-
 	for (uint8_t i = 0U; i < pin_cnt; i++) {
-		pinctrl_configure_pin(pins++);
+		pinctrl_configure_pin(pins++, reg);
 	}
 
 	return 0;

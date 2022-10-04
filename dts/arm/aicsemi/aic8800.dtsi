@@ -19,45 +19,46 @@
 		};
 
 		cpu1: cpu@1 {
+			device_type = "cpu";
 			compatible = "arm,cortex-m4f";
 			reg = <1>;
 		};
 	};
 
+	sram0: memory@100000 {
+		compatible = "mmio-sram";
+		reg = <0x00100000 DT_SIZE_K(960)>;
+	};
+
 	soc {
-		sram0: memory@100000 {
-			compatible = "mmio-sram";
-			reg = <0x00100000 DT_SIZE_K(960)>;
-		};
-		
-		pinmuxa: pinmux@40503000 {
-			compatible = "aicsemi,aic8800x-pinmux";
-			#pinmux-cells = <2>;
+		pinctrla: pin-controller@40503000 {
+			compatible = "st,aic8800x-pinctrl";
+			#address-cells = <1>;
+			#size-cells = <1>;
 			reg = <40503000 0x1000>;
-			status = "okay";
-		};
 
-		gpioa: gpio@40504000 {
-			compatible = "aicsemi,aic8800x-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			reg = <0x40504000 0x1000>;
-			interrupts = <65 0>;
-		};
+			gpioa: gpio@40504000 {
+				compatible = "aicsemi,aic8800x-gpio";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <0x40504000 0x1000>;
+				interrupts = <65 0>;
+			};
+		}
 		
-		pinmuxb: pinmux@0x50012000 {
-			compatible = "aicsemi,aic8800x-pinmux";
-			#pinmux-cells = <2>;
+		pinctrlb: pin-controller@50011000 {
+			compatible = "st,aic8800x-pinctrl";
+			#address-cells = <1>;
+			#size-cells = <1>;
 			reg = <0x50012000 0x1000>;
-			status = "okay";
-		};
 
-		gpiob: gpio@50011000 {
-			compatible = "aicsemi,aic8800x-gpio";
-			gpio-controller;
-			#gpio-cells = <2>;
-			reg = <0x50011000 0x1000>;
-		};
+			gpioa: gpio@50011000 {
+				compatible = "aicsemi,aic8800x-gpio";
+				gpio-controller;
+				#gpio-cells = <2>;
+				reg = <50011000 0x1000>;
+			};
+		}
 
 		uart0: uart@40041000 {
 			compatible = "aicsemi,aic8800x-uart";

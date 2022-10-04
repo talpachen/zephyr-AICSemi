@@ -1,11 +1,9 @@
 # Copyright (c) 2022, Talpa Chen
 # SPDX-License-Identifier: Apache-2.0
 
-DT_COMPAT_AICSEMI_AIC8800X_PINCTRL := aicsemi,aic8800x-pinctrl
-
 config PINCTRL_AICSEMI_AIC8800X
 	bool "AICSemi AIC8800X pin controller driver"
 	depends on SOC_SERIES_AIC8800X
-	default $(dt_compat_enabled,$(DT_COMPAT_AICSEMI_AIC8800X_PINCTRL))
+	default y
 	help
 	  AICSemi AIC8800X pin controller driver
