@@ -38,7 +38,7 @@
 			status = "okay";
 		};
 
-		pinmux_b: pinmux@0x50012000 {
+		pinmux_b: pinmux@50012000 {
 			compatible = "aicsemi,aic8800x-pinmux";
 			#pinmux-cells = <2>;
 			reg = <0x50012000 0x1000>;
