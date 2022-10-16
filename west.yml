@@ -53,7 +53,7 @@ manifest:
         - ci
     - name: hal_aicsemi
       revision: 0000000000000000000000000000000000000000
-#      path: modules/hal/aicsemi
+      path: modules/hal/aicsemi
       url: https://github.com/talpachen/hal_aicsemi.git
       groups:
         - hal
