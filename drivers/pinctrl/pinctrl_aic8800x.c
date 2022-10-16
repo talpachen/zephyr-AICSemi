@@ -33,7 +33,7 @@ static void pinctrl_configure_pin(const pinctrl_soc_pin_t *pin)
 	ARG_UNUSED(reg);
 
 	uint32_t gpcfg;
-	uint32_t gpcfg_addr = pin->base_addr + 4 * pin->pin;
+	uint32_t gpcfg_addr = pin->iomux_base + 4 * pin->pin;
 
 	if (PMIC_MEM_CHECK(gpcfg_addr)) {
 		PMIC_MEM_MASK_WRITE(gpcfg_addr, pin->gpcfg, IOMUX_GPIO_CONFIG_SEL_MASK |

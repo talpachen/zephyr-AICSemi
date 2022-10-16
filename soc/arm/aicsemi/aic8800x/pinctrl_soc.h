@@ -28,7 +28,7 @@ extern "C" {
 
 
 typedef struct pinctrl_soc_pin {
-	uint32_t base_addr;
+	uint32_t iomux_base;
 	uint8_t pin;
 	union {
 		struct {
