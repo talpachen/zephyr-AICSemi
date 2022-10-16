@@ -1,0 +1,8 @@
+# Copyright (c) 2022, Talpa Chen
+# SPDX-License-Identifier: Apache-2.0
+
+config WDT_AIC8800X
+	bool "AICSemi AIC8800X Watchdog (WDT) driver"
+	depends on SOC_SERIES_AIC8800X
+	help
+	  AICSemi AIC8800X watchdog driver

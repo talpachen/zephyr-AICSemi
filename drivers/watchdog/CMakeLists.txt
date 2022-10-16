@@ -7,6 +7,7 @@ zephyr_library_sources_ifdef(CONFIG_WWDG_STM32 wdt_wwdg_stm32.c)
 
 zephyr_library_sources_ifdef(CONFIG_WDOG_CMSDK_APB wdt_cmsdk_apb.c)
 
+zephyr_library_sources_ifdef(CONFIG_WDT_AIC8800X wdt_aic8800x.c)
 zephyr_library_sources_ifdef(CONFIG_WDT_CC32XX wdt_cc32xx.c)
 zephyr_library_sources_ifdef(CONFIG_WDT_ESP32 wdt_esp32.c)
 zephyr_library_sources_ifdef(CONFIG_WDT_GECKO wdt_gecko.c)
