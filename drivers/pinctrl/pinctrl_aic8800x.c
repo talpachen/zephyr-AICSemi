@@ -5,27 +5,57 @@
 
 #include <drivers/pinctrl.h>
 
-static void pinctrl_configure_pin(const pinctrl_soc_pin_t *pin, uintptr_t reg)
+#ifndef PMIC_MEM_CHECK
+#define PMIC_MEM_CHECK(addr)	((addr) & 0xff000000 == 0x50000000 ? true : false)
+#endif
+
+#ifndef PMIC_MEM_READ
+static uint32_t PMIC_MEM_READ(uint32_t reg)
+{
+	return 0;
+}
+#endif
+
+#ifndef PMIC_MEM_WRITE
+static void PMIC_MEM_WRITE(uint32_t reg, uint32_t v)
+{
+}
+#endif
+
+#ifndef PMIC_MEM_MASK_WRITE
+static void PMIC_MEM_MASK_WRITE(uint32_t reg, uint32_t v, uint32_t mask)
+{
+}
+#endif
+
+static void pinctrl_configure_pin(const pinctrl_soc_pin_t *pin)
 {
 	ARG_UNUSED(reg);
 
-	#if 0
-	gpio_init(pin->pin_num);
-	gpio_set_function(pin->pin_num, pin->alt_func);
-	gpio_set_pulls(pin->pin_num, pin->pullup, pin->pulldown);
-	gpio_set_drive_strength(pin->pin_num, pin->drive_strength);
-	gpio_set_slew_rate(pin->pin_num, (pin->slew_rate ?
-				GPIO_SLEW_RATE_FAST : GPIO_SLEW_RATE_SLOW));
-	gpio_set_input_hysteresis_enabled(pin->pin_num, pin->schmitt_enable);
-	gpio_set_input_enabled(pin->pin_num, pin->input_enable);
-	#endif
+	uint32_t gpcfg;
+	uint32_t gpcfg_addr = pin->base_addr + 4 * pin->pin;
+
+	if (PMIC_MEM_CHECK(gpcfg_addr)) {
+		PMIC_MEM_MASK_WRITE(gpcfg_addr, pin->gpcfg, IOMUX_GPIO_CONFIG_SEL_MASK |
+													IOMUX_GPIO_CONFIG_PULL_DN_MASK |
+													IOMUX_GPIO_CONFIG_PULL_UP_MASK |
+													IOMUX_GPIO_CONFIG_PULL_FRC_MASK);
+	} else {
+		gpcfg = *(uint32_t *)gpcfg_addr & ~(IOMUX_GPIO_CONFIG_SEL_MASK |
+											IOMUX_GPIO_CONFIG_PULL_DN_MASK |
+											IOMUX_GPIO_CONFIG_PULL_UP_MASK |
+											IOMUX_GPIO_CONFIG_PULL_FRC_MASK);
+		*(uint32_t *)gpcfg_addr = gpcfg | pin->gpcfg;
+	}
 }
 
 int pinctrl_configure_pins(const pinctrl_soc_pin_t *pins, uint8_t pin_cnt,
 			   uintptr_t reg)
 {
+	ARG_UNUSED(reg);
+	
 	for (uint8_t i = 0U; i < pin_cnt; i++) {
-		pinctrl_configure_pin(pins++, reg);
+		pinctrl_configure_pin(&pins[i]);
 	}
 
 	return 0;

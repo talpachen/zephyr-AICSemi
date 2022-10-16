@@ -26,7 +26,23 @@ extern "C" {
 #define IOMUX_GPIO_CONFIG_PULL_FRC_WIDTH    (1)
 #define IOMUX_GPIO_CONFIG_PULL_FRC_MASK     (((1 << IOMUX_GPIO_CONFIG_PULL_FRC_WIDTH) - 1) << IOMUX_GPIO_CONFIG_PULL_FRC_LSB)
 
-typedef uint32_t pinctrl_soc_pin_t;
+
+typedef struct pinctrl_soc_pin {
+	uint32_t base_addr;
+	uint8_t pin;
+	union {
+		struct {
+			uint32_t pinmux : 4;
+			uint32_t : 4;
+			uint32_t pull_down : 1;
+			uint32_t pull_up : 1;
+			uint32_t : 6;
+			uint32_t pull_frc : 1;
+			uint32_t : 15;
+		};
+		uint32_t gpcfg;
+	};
+} pinctrl_soc_pin_t;
 
 #define Z_PINCTRL_PINCFG_INIT(node_id)										\
 	(IF_ENABLED(DT_PROP(node_id, bias_pull_down), (IOMUX_GPIO_CONFIG_PULL_DN_MASK |))	\

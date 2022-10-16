@@ -43,6 +43,10 @@ struct gpio_aic8800x_data {
 	sys_slist_t callbacks;
 };
 
+#ifndef PMIC_MEM_CHECK
+#define PMIC_MEM_CHECK(addr)	((addr) & 0xff000000 == 0x50000000 ? true : false)
+#endif
+
 #ifndef PMIC_MEM_READ
 static uint32_t PMIC_MEM_READ(uint32_t reg)
 {
@@ -250,7 +254,7 @@ static const struct gpio_driver_api gpio_aic8800x_api = {
 			.port_pin_mask = GPIO_PORT_PIN_MASK_FROM_DT_INST(idx),							\
 		},																					\
 		.gpio_regs = DT_INST_REG_ADDR(idx),													\
-		.pmic_area = (DT_INST_REG_ADDR(idx) & 0xff000000) == 0x50000000 ? true : false,		\
+		.pmic_area = PMIC_MEM_CHECK(DT_INST_REG_ADDR(idx)),									\
 	};																						\
 																							\
 	static struct gpio_aic8800x_data gpio_aic8800x_data##idx;								\
