@@ -46,26 +46,18 @@
 			reg = <50011000 0x1000>;
 		};
 		
-		iomux_a: iomux@40503000 {
-			compatible = "aicsemi,aic8800x-iomux";
+		pinctrl_a: pinctrl@40503000 {
+			compatible = "aicsemi,aic8800x-pinctrl";
 			#pinmux-cells = <2>;
 			reg = <0x40503000 0x1000>;
 			status = "okay";
-			pinctrl_a: pinctrl {
-				status = "okay";
-				compatible = "aicsemi,aic8800x-pinctrl";
-			};
 		};
-		
-		iomux_b: iomux@50012000 {
-			compatible = "aicsemi,aic8800x-iomux";
+
+		pinctrl_b: pinctrl@50012000 {
+			compatible = "aicsemi,aic8800x-pinctrl";
 			#pinmux-cells = <2>;
 			reg = <0x50012000 0x1000>;
 			status = "okay";
-			pinctrl_b: pinctrl {
-				status = "okay";
-				compatible = "aicsemi,aic8800x-pinctrl";
-			};
 		};
 
 		uart0: uart@40041000 {

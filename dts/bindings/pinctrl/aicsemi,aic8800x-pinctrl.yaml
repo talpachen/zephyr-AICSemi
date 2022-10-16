@@ -1,0 +1,30 @@
+# Copyright (c) 2022 Talpa Chen
+# SPDX-License-Identifier: Apache-2.0
+
+description: AIC8800X Pinctrl
+
+compatible: "aicsemi,aic8800x-pinctrl"
+
+include:
+    - name: base.yaml
+    - name: pincfg-node.yaml
+      child-binding:
+        property-allowlist:
+          - bias-disable
+          - bias-pull-up
+          - bias-pull-down
+
+properties:
+    reg:
+      required: true
+
+child-binding:
+  description: |
+    AIC8800X pin controller pin configuration state nodes.
+  child-binding:
+    description:
+      AIC8800X pin controller pin configuration group.
+    properties:
+      pinmux:
+        required: true
+        type: array
