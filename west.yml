@@ -51,11 +51,12 @@ manifest:
       path: modules/lib/fff
       groups:
         - ci
-#    - name: hal_aicsemi
-#      revision: 
+    - name: hal_aicsemi
+      revision: 0000000000000000000000000000000000000000
 #      path: modules/hal/aicsemi
-#      groups:
-#        - hal
+      url: https://github.com/talpachen/hal_aicsemi.git
+      groups:
+        - hal
     - name: hal_altera
       revision: 0d225ddd314379b32355a00fb669eacf911e750d
       path: modules/hal/altera
